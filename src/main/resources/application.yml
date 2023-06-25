@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/mutual_tour?useUnicode=true&characterEncoding=UTF-8
+    username: postgres
+    password: 123456
+  web:
+    resources:
+      static-locations: ./static
+  mvc:
+    static-path-pattern: /static/**
+  jackson:
+    serialization:
+      write-enums-using-index: true
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 300MB
+
+jimmer:
+  dialect: org.babyfish.jimmer.sql.dialect.PostgresDialect
+  language: kotlin
+  show-sql: true
+
+sa-token:
+  token-name: Authorization
+  timeout: 108000
+  auto-renew: true
+  cookie:
+    sameSite: Lax
+  is-read-cookie: true
+
+server:
+  port: 8090
