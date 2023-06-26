@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import org.babyfish.jimmer.kt.new
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.spring.repository.orderBy
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.like
 import org.babyfish.jimmer.sql.kt.ast.expression.valueIn
 import org.springframework.data.domain.Page
@@ -47,7 +48,8 @@ interface BlogService : KRepository<Blog, UUID> {
         userIds: List<Long>?,
         tags: List<String>?,
         content: String?,
-        pageable: Pageable
+        pageable: Pageable,
+        type: BlogType?
     ): Page<Blog> = withContext(Dispatchers.IO) {
         pager(pageable).execute(
             sql.createQuery(Blog::class) {
@@ -59,6 +61,9 @@ interface BlogService : KRepository<Blog, UUID> {
                 }
                 content?.takeIf { it.isNotEmpty() }?.let {
                     where(table.content like it)
+                }
+                type?.let {
+                    where(table.type eq it)
                 }
                 orderBy(pageable.sort)
                 select(table.fetch(DETAILED_BLOG_FETCHER))

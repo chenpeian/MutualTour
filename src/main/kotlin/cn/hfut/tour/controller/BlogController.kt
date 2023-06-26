@@ -46,7 +46,8 @@ class BlogController(
             userIds,
             tags,
             content,
-            PageRequest.of(pageCount, pageSize, Sort.by(orderBy).descending())
+            PageRequest.of(pageCount, pageSize, Sort.by(orderBy).descending()),
+            type
         )
     }
 
